@@ -1,0 +1,61 @@
+services:
+  api:
+    container_name: fruits_market_api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/app
+      - api_node_modules:/app/node_modules
+    command: ["bun", "run", "dev"]
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ./api/.env
+    healthcheck:
+      test:
+        ["CMD", "wget", "--quiet", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - fruits_market
+
+  db:
+    restart: unless-stopped
+    image: mariadb
+    container_name: fruits_market_db
+    env_file:
+      - ./db/.env
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - fruits_market
+
+  adminer:
+    container_name: fruits_market_adminer
+    restart: unless-stopped
+    image: adminer
+    networks:
+      - fruits_market
+    ports:
+      - 8080:8080
+
+volumes:
+  api_node_modules:
+  db_data:
+
+networks:
+  fruits_market:
+    driver: bridge
