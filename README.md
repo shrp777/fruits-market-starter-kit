@@ -218,6 +218,10 @@ docker system prune -a --volumes
 
 ![Modèle du Domaine - Diagramme ERD](./conception/Modele-du-domaine-diagramme-erd.png)
 
+### Cas d'utilisation "Passer une commande" - Diagramme UML de Séquence
+
+![Modèle du Domaine - Diagramme ERD](./conception/Diagramme%20de%20séquence%20-%20Passage%20de%20commande.png)
+
 ![Fruits market](./assets/fruits-market.png)
 
 --
