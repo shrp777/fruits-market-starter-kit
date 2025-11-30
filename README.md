@@ -148,6 +148,16 @@ docker system prune -a --volumes
 - __Adminer__ : <http://localhost:8080>
 - __Health check__ : <http://localhost:3000/health>
 
+## Conception
+
+### Modèle du Domaine - Diagramme UML de Classes
+
+![Modèle du Domaine - Diagramme UML de Classes](./conception/Modele-du-domaine-diagramme-classe-UML.png)
+
+### Modèle du Domaine - Diagramme ERD
+
+![Modèle du Domaine - Diagramme ERD](./conception/Modele-du-domaine-diagramme-erd.png)
+
 ![Fruits market](./assets/fruits-market.png)
 
 --
