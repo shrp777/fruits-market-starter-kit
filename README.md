@@ -1,8 +1,8 @@
-# Fruits Market - Version minimale
+# Fruits Market - Version Starter Kit
 
-Application e-commerce avec API REST et base de données MariaDB.
+Application e-commerce avec API REST (Catalogue de produits, Panier, Commandes, Authentification) et base de données MariaDB.
 
-## Version minimale à compléter
+## Version de base (à compléter)
 
 Cette version de l'application contient :
 
@@ -53,6 +53,64 @@ Cette version de l'application contient :
 - __API__ : Bun + TypeORM + Hono (port 3000)
 - __Base de données__ : MariaDB
 - __Adminer__ : Adminer (port 8080)
+
+## Routes
+
+### Routes Système
+
+  | Méthode | Chemin  | Description                                   | Fichier        | Auth |
+  |---------|---------|-----------------------------------------------|----------------|------|
+  | GET     | /       | Message de bienvenue et statut de l'API       | api/src/app.ts | Non  |
+  | GET     | /health | Vérification de santé (uptime, environnement) | api/src/app.ts | Non  |
+
+### Routes d'Authentification (/auth)
+
+  | Méthode | Chemin       | Description                               | Handler                 | Auth |
+  |---------|--------------|-------------------------------------------|-------------------------|------|
+  | POST    | /auth/signup | Inscription utilisateur (email, password) | handlers/auth/SignUp.ts | Non  |
+  | POST    | /auth/signin | Connexion utilisateur (retourne JWT)      | handlers/auth/SignIn.ts | Non  |
+  | GET     | /auth/me     | Récupérer l'utilisateur connecté          | handlers/auth/GetMe.ts  | Oui  |
+
+### Routes Produits (/products)
+
+  | Méthode | Chemin        | Description                         | Handler                             | Auth |
+  |---------|---------------|-------------------------------------|-------------------------------------|------|
+  | GET     | /products     | Liste tous les produits (avec pays) | handlers/products/GetAllProducts.ts | Non  |
+  | GET     | /products/:id | Récupérer un produit par ID         | handlers/products/GetProductById.ts | Non  |
+  | POST    | /products     | Créer un nouveau produit            | handlers/products/CreateProduct.ts  | Non  |
+  | PUT     | /products/:id | Modifier un produit                 | handlers/products/UpdateProduct.ts  | Non  |
+  | DELETE  | /products/:id | Supprimer un produit                | handlers/products/DeleteProduct.ts  | Non  |
+
+### Routes Pays (/countries)
+
+  | Méthode | Chemin         | Description                              | Handler                               | Auth |
+  |---------|----------------|------------------------------------------|---------------------------------------|------|
+  | GET     | /countries     | Liste tous les pays (triés par nom)      | handlers/countries/GetAllCountries.ts | Non  |
+  | GET     | /countries/:id | Récupérer un pays par ID (avec produits) | handlers/countries/GetCountryById.ts  | Non  |
+  | POST    | /countries     | Créer un nouveau pays                    | handlers/countries/CreateCountry.ts   | Non  |
+
+### Routes Panier (/carts)
+
+  Toutes ces routes nécessitent une authentification
+
+  | Méthode | Chemin               | Description                          | Handler                          | Auth |
+  |---------|----------------------|--------------------------------------|----------------------------------|------|
+  | GET     | /carts               | Récupérer le panier de l'utilisateur | handlers/carts/GetCart.ts        | Oui  |
+  | POST    | /carts/items         | Ajouter un produit au panier         | handlers/carts/AddToCart.ts      | Oui  |
+  | PUT     | /carts/items/:itemId | Modifier la quantité d'un article    | handlers/carts/UpdateCartItem.ts | Oui  |
+  | DELETE  | /carts/items/:itemId | Retirer un article du panier         | handlers/carts/RemoveFromCart.ts | Oui  |
+  | DELETE  | /carts               | Vider complètement le panier         | handlers/carts/ClearCart.ts      | Oui  |
+
+### Routes Commandes (/orders)
+
+  Toutes ces routes nécessitent une authentification
+
+  | Méthode | Chemin                  | Description                                 | Handler                              | Auth |
+  |---------|-------------------------|---------------------------------------------|--------------------------------------|------|
+  | GET     | /orders                 | Liste toutes les commandes de l'utilisateur | handlers/orders/GetAllOrders.ts      | Oui  |
+  | GET     | /orders/:orderId        | Récupérer une commande spécifique           | handlers/orders/GetOrderById.ts      | Oui  |
+  | POST    | /orders                 | Créer une commande depuis le panier         | handlers/orders/CreateOrder.ts       | Oui  |
+  | PATCH   | /orders/:orderId/status | Mettre à jour le statut d'une commande      | handlers/orders/UpdateOrderStatus.ts | Oui  |
 
 ## Commandes Docker Compose
 
