@@ -24,6 +24,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      api_recommendation:
+        condition: service_healthy
     networks:
       - fruits_market
 
@@ -40,6 +42,37 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - fruits_market
+
+  api_recommendation:
+    container_name: fruits_market_api_recommendation
+    build:
+      context: ./api_recommendation
+      dockerfile: Dockerfile
+    volumes:
+      - ./api_recommendation:/app
+    command:
+      [
+        "uvicorn",
+        "src.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--reload"
+      ]
+    # décommenter les 2 lignes ci-dessous pour exposer l'API à l'extérieur du réseau fruits_market
+    # ports:
+    #   - 8000:8000
+    environment:
+      - PYTHONUNBUFFERED=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     networks:
       - fruits_market
 
