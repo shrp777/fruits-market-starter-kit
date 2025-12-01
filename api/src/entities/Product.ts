@@ -41,5 +41,5 @@ export class Product {
   createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedDate!: Date;
+  updatedAt!: Date;
 }
