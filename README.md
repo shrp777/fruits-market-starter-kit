@@ -192,6 +192,14 @@ docker compose exec db bash
 docker compose exec api bun run test
 ```
 
+### Import des données de test dans la base de données
+
+```bash
+# (remplacer les mots entourés de <> par la valeur, sans espace ni symboles <>)
+
+docker exec -i <container name> mariadb -hlocalhost -u<database user> -p<mot de passe> <database name> < db/product-data.sql
+```
+
 ### Nettoyage
 
 ```bash
